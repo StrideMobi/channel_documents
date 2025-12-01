@@ -1,6 +1,6 @@
 # 渠道对接文档
 
-<a href="README_en.md" style="color:blue">English</a> | <a href="README_zh.md" style="color:blue">中文</a> 
+<a href="README.md" style="color:blue">English</a> | <a href="README_zh.md" style="color:blue">中文</a> 
 
 
 # 对接简介
@@ -123,7 +123,7 @@ https://{domain}/{api_version}/channel/get_offers?channel_id=${channel_id}&times
 渠道通过该接口上报用户点击或展示广告的事件。
 每个offer上报地址不同, get_offer接口会返回具体地址。例：
 ```
-http://www.sttt.com/click?ad_type={}&channel_id=3&city={}&click_id={}&country={}&bundle={}&creative_id={}&device_brand={}&device_model={}&device_os_version={}&device_platform={}&device_type={}&gaid={}&gaid_md5={}&gaid_sha1={}&ip={}&offer_id=4&site_id={}&user_agent={}&passthrough={}
+http://www.sttt.com/click?ad_type={}&channel_id=3&city={}&click_id={}&country={}&bundle={}&creative_id={}&device_brand={}&device_model={}&device_os_version={}&device_platform={}&device_type={}&lang={}&gaid={}&gaid_md5={}&gaid_sha1={}&ip={}&offer_id=4&site_id={}&user_agent={}&passthrough={}
 ```
 展示和点击参数一致，只是path不同。
 
@@ -142,6 +142,7 @@ get_offer返回链接部分参数已经确定，部分参数为{}，渠道需要
 | device_os_version | string | 必填 | 可传原始字符串如16.3.1，也可转换为<a href="#操作系统版本-offerosv" style="color:blue">操作系统版本</a>格式 |
 | device_brand | string | 尽量填写 | 设备品牌 |
 | device_model | string | 尽量填写 | 设备型号 |
+| lang | string | 尽量填写 | 设备所选语言 |
 | idfv | string | ios时尽量填写 | iOS设备的IDFV标识符 |
 | idfv_sha1 | string | ios时尽量填写 | iOS设备的IDFV的SHA1值 |
 | idfv_md5 | string | ios时尽量填写 | iOS设备的IDFV的MD5值 |
