@@ -92,7 +92,7 @@ https://{domain}/{api_version}/channel/get_offers?channel_id=${channel_id}&times
 | offers | 广告列表数组,内容个数和offer_num一致 | array |  |
 | offer.offer_id | 广告的唯一ID | integer | 28531223 |
 | offer.offer_name | 广告名称 | string | shein |
-| offer.status | 参考<a href="#广告状态-offer.status" style="color:blue">广告状态</a> | integer | 1 |
+| offer.status | 参考<a href="#广告状态-offerstatus" style="color:blue">广告状态</a> | integer | 1 |
 | offer.promotion_type | 参考<a href="#广告实体-offerpromotion_type" style="color:blue">广告实体</a> | integer | 1 |
 | offer.app_name | 广告app名称 | string | shein |
 | offer.package_name | 应用包名 | string | com.zzkko  |
@@ -177,7 +177,7 @@ impression/click接口会返回json格式的结果, 示例如下：
 
 code、msg参考<a href="#impressionclick返回结果说明" style="color:blue">impression/click返回结果说明</a>
 
-## Postback
+## postback
 
 StrideMobi检测相关事件后会给渠道回传. 渠道可在对接时提供回传地址,相关宏参数会在回传时替换为具体值.
 例:
@@ -352,8 +352,8 @@ func main() {
 
 ## 国家城市代码
 国家城市代码和OpenRTB一样采用UNECE相关标准, 可以在<a href="https://unece.org/trade/cefact/unlocode-code-list-country-and-territory" style="color:blue">UNECE网站</a>查询. 
-其中国家代码取2位大写字母,如US、CN等.
-其中城市代取NameWoDiacritics字段,并转换为小写处理.如果您的流量来自于OpenRTB,直接将device.geo.city转换为小写即可.
+国家代码取2位大写字母,如US、CN等.
+城市代码取NameWoDiacritics字段并转换为小写.如果您的流量来自于OpenRTB,将device.geo.city转换为小写即可.
 
 以下是参考:
 | 国家代码 | 国家名称 | 城市列表 |
