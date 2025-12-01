@@ -143,8 +143,8 @@ get_offer returns a link with some parameters already determined, while others a
 | gaid_sha1 | string | Fill if possible for Android | SHA1 value of Android device GAID |
 | gaid_md5 | string | Fill if possible for Android | MD5 value of Android device GAID |
 | ad_type | string | Required | Ad type |
-| country | string | Required when country targeting is set | User's country code, such as "US", "CN", etc. |
-| city | string | Required when city targeting is set | User's city |
+| country | string | Required when country targeting is set | User's country code, such as "US", "CN", etc. Refer to [Country/City Codes](#countrycity-codes) |
+| city | string | Required when city targeting is set | User's city. Refer to [Country/City Codes](#countrycity-codes) |
 | ip | string | Required | User IP address |
 | user_agent | string | Required | User browser's User-Agent information |
 | bundle | string | Fill if possible | Traffic source package name, e.g., com.zzkko, id128883 |
@@ -347,8 +347,10 @@ Examples:
 
 ## Country and City Codes
 Country and city codes follow the same standards as OpenRTB, adopting UNECE standards. You can查询 them on the [UNECE website](https://unece.org/trade/cefact/unlocode-code-list-country-and-territory).
-Country codes are 2 uppercase letters, such as US, CN, etc.
-City codes are taken from the NameWoDiacritics field and converted to lowercase. If your traffic comes from OpenRTB, simply convert device.geo.city to lowercase.
+Country and city codes are based on UNECE standard.
+
+* Country codes are 2 uppercase letters, such as US, CN, etc.
+* City codes are taken from the NameWoDiacritics field and must be **converted to lowercase**. If your traffic comes from OpenRTB, simply convert device.geo.city to lowercase.
 
 Below is a reference:
 | Country Code | Country Name | City List |

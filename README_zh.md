@@ -105,7 +105,7 @@ https://{domain}/{api_version}/channel/get_offers?channel_id=${channel_id}&times
 | offer.image_url | 图片URL | array | ["https://cdn.stridemobi.com/${package_name}/image.png"] |
 | offer.video_url | 视频URL | array | ["https://cdn.stridemobi.com/${package_name}/video.mp4"] |
 | offer.target_countrys | 目标国家列表,参考<a href="#国家城市代码" style="color:blue">国家城市代码</a> | array | ["US","CN"] |
-| offer.target_cities | 目标城市列表,参考<a href="#国家城市代码" style="color:blue">国家城市代码</a> | array | ["SIN", "LON", "DFW"] |
+| offer.target_cities | 目标城市列表,参考<a href="#国家城市代码" style="color:blue">国家城市代码</a> | array | ["beijing", "jakarta"] |
 | offer.target_device_types | 参考<a href="#设备类型-offertarget_device_types" style="color:blue">设备类型</a> | array | [1,2] |
 | offer.target_platform | 参考<a href="#设备平台-offertarget_platform" style="color:blue">设备平台</a> | array | [1,2] |
 | offer.min_osv | 参考<a href="#操作系统版本-offerosv" style="color:blue">操作系统版本</a> | integer | 80101 |
@@ -153,8 +153,8 @@ get_offer返回链接部分参数已经确定，部分参数为{}，渠道需要
 | gaid_sha1 | string | android时尽量填写 | Android设备的GAID的SHA1值 |
 | gaid_md5 | string | android时尽量填写 | Android设备的GAID的MD5值 |
 | ad_type | string | 必填 | 广告类型 |
-| country | string | 有国家定向时必填 | 用户所在国家代码，如"US"、"CN"等 |
-| city | string | 有城市定向时必填 | 用户所在城市 |
+| country | string | 有国家定向时必填 | 用户所在国家代码，如"US"、"CN"等, 参考<a href="#国家城市代码" style="color:blue">国家城市代码</a> |
+| city | string | 有城市定向时必填 | 用户所在城市, 如"beijing"、"jakarta"等, 参考<a href="#国家城市代码" style="color:blue">国家城市代码</a> |
 | ip | string | 必填 | 用户IP地址 |
 | user_agent | string | 必填 | 用户浏览器的User-Agent信息 |
 | bundle | string | 尽量填写 | 流量来源包名, 例如com.zzkko, id128883|
@@ -353,8 +353,8 @@ func main() {
 
 ## 国家城市代码
 国家城市代码和OpenRTB一样采用UNECE相关标准, 可以在<a href="https://unece.org/trade/cefact/unlocode-code-list-country-and-territory" style="color:blue">UNECE网站</a>查询. 
-国家代码取2位大写字母,如US、CN等.
-城市代码取NameWoDiacritics字段并转换为小写.如果您的流量来自于OpenRTB,将device.geo.city转换为小写即可.
+* 国家代码取2位大写字母,如US、CN等.
+* 城市代码取NameWoDiacritics字段并转换为**小写**.如果您的流量来自于OpenRTB,将device.geo.city转换为小写即可.
 
 以下是参考:
 | 国家代码 | 国家名称 | 城市列表 |
