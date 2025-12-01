@@ -123,7 +123,7 @@ https://{domain}/{api_version}/channel/get_offers?channel_id=${channel_id}&times
 渠道通过该接口上报用户点击或展示广告的事件。
 每个offer上报地址不同, get_offer接口会返回具体地址。例：
 ```
-http://www.sttt.com/click?ad_type={}&channel_id=3&city={}&click_id={}&country={}&creative_id={}&device_brand={}&device_model={}&device_os_version={}&device_platform={}&device_type={}&gaid={}&gaid_md5={}&gaid_sha1={}&ip={}&offer_id=4&site_id={}&user_agent={}
+http://www.sttt.com/click?ad_type={}&channel_id=3&city={}&click_id={}&country={}&bundle={}&creative_id={}&device_brand={}&device_model={}&device_os_version={}&device_platform={}&device_type={}&gaid={}&gaid_md5={}&gaid_sha1={}&ip={}&offer_id=4&site_id={}&user_agent={}&passthrough={}
 ```
 展示和点击参数一致，只是path不同。
 
@@ -156,13 +156,15 @@ get_offer返回链接部分参数已经确定，部分参数为{}，渠道需要
 | city | string | 有城市定向时必填 | 用户所在城市 |
 | ip | string | 必填 | 用户IP地址 |
 | user_agent | string | 必填 | 用户浏览器的User-Agent信息 |
+| bundle | string | 尽量填写 | 流量来源包名, 例如com.zzkko, id128883|
 | creative_id | string | 尽量填写 | 创意ID |
+| passthrough | string | 自选 | 渠道自定义参数, 会原封不动地回传 |
 
 **注意**：
 - iOS时 idfa、idfv 以及对应Sha1、MD5值必填其一
 - Android时 gaid 以及对应Sha1、MD5值必填其一
 - click_id、site_id 均限制24个字符,超过会被截断
-- City为IATA城市代码，如"SIN"、"LON"、"DFW"等,参考<a href="https://www.ccra.com/airport-codes" style="color:blue">https://www.ccra.com/airport-codes</a>
+- passthrough限制200个字符, 超过会被截断
 
 ## 返回结果
 impression/click接口会返回json格式的结果, 示例如下：
@@ -177,24 +179,23 @@ code、msg参考<a href="#impressionclick返回结果说明" style="color:blue">
 
 ## Postback
 
-StrideMobi检测相关事件后会给渠道回传。
+StrideMobi检测相关事件后会给渠道回传. 渠道可在对接时提供回传地址,相关宏参数会在回传时替换为具体值.
+例:
+```
+http://www.sttt.com/postback?type={postback_type}&price={payout}
+```
+
 可回传的事件有:
 - install: 安装事件
 - reject: 拒绝的安装, 通常是mmp反作弊导致
 - event: 安装后事件,例如注册、付费等. 此事件回传时会带有event_name参数来区分不同的事件
-- convertion: 转换事件. StrideMobi和渠道协定的计费事件,即get_offer获取到offer的billing_event. 此事件回传时会带有payout参数来表达结算金额.
+- convertion: 结算事件. StrideMobi和渠道协定的计费事件,即get_offer获取到offer的billing_event. 此事件回传时会带有payout参数来表达结算金额.
 
 **注意：** 
-* convertion本质上不是独立的事件. CPI offer convertion就是install, CPE offer convertion就是特定的event. 只是为了渠道方便, 把结算事件独立了出来回传.
-* 如果不设置convertion回传地址, 则不会回传convertion事件. 对应的billing_event(install或特定event)回传会携带payout参数来告知本次事件会给与结算以及相应价格.
-* 如果设置convertion回传地址, 则convertion对应的install/特定event不会再继续回传. 但是其他事件会继续回传. 例如: 一个bill_event为 register的offer, 当发生register事件时会通过convertion接口回传register事件, event接口不会回传. 但是用户付费事件则会继续通过event接口回传.
+* convertion必填, 渠道可通过该回传统计和StrideMobi之间的交易金额.
+* 为降低交互次数install、event回传中不包含被convertion覆盖的事件. 例如CPI offer install回传不会被触发, CPE offer event回传中不会包含event_name=billing_event的事件.
 
-渠道可根据自己系统的特性告知渠道经理设置上述回传地址。以下是相关建议:
-* 如果渠道只和StrideMobi进行CPI合作, 那么install、convertion设置其一即可,其余视自身需求.
-* 如果渠道和StrideMobi会进行CPE合作但是只想获取结算信息, 那么只需要设置convertion回传地址即可. 其余视自身需求.
-* 如果渠道和StrideMobi会进行CPE合作同时想获取丰富数据以进行分析, 那么建议设置install、reject、event回传地址. convertion地址可视开发习惯设置.
-
-回传参数如下：
+宏参数如下：
 | 参数名 | 类型 | 说明 |
 |:------|:------|:------|
 | postback_type | string | 取值为install、reject、event |
@@ -206,10 +207,9 @@ StrideMobi检测相关事件后会给渠道回传。
 | event_name | string | 事件名称, 仅postback_type为event时返回 |
 | event_value | string | 事件值, 仅postback_type为event时返回 |
 | payout | number | 结算金额 |
-
+| passthrough | string | 对应点击上报时的值 |
 
 # 附录
-
 ## sign生成逻辑
 sign的生成逻辑为
 1. 将channel_id、timestamp、token拼接成一个字符串，例如：1131760170094token
