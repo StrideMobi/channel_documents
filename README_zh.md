@@ -204,7 +204,8 @@ http://www.sttt.com/postback?type={postback_type}&price={payout}
 | site_id | string | 对应点击上报时的值 |
 | offer_id | int | 对应点击上报时的值 |
 | click_id | string | 点击id,可供渠道自己进行追踪和归因 |
-| reject_reason | string | 拒绝原因, 仅postback_type为reject时返回 |
+| rejected_reason | string | 拒绝原因, 仅postback_type为reject时返回 |
+| rejected_sub_reason | string | 拒绝sub原因, 仅postback_type为reject时返回 |
 | event_name | string | 事件名称, 仅postback_type为event时返回 |
 | event_value | string | 事件值, 仅postback_type为event时返回 |
 | payout | number | 结算金额 |
