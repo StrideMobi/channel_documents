@@ -152,7 +152,7 @@ get_offer返回链接部分参数已经确定，部分参数为{}，渠道需要
 | gaid | string | android时尽量填写 | Android设备的GAID广告标识符 |
 | gaid_sha1 | string | android时尽量填写 | Android设备的GAID的SHA1值 |
 | gaid_md5 | string | android时尽量填写 | Android设备的GAID的MD5值 |
-| ad_type | string | 必填 | 广告类型 |
+| ad_type | string | 尽量填写 | 广告类型 |
 | country | string | 有国家定向时必填 | 用户所在国家代码，如"US"、"CN"等, 参考<a href="#国家城市代码" style="color:blue">国家城市代码</a> |
 | city | string | 有城市定向时必填 | 用户所在城市, 如"beijing"、"jakarta"等, 参考<a href="#国家城市代码" style="color:blue">国家城市代码</a> |
 | ip | string | 必填 | 用户IP地址 |

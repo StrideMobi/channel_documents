@@ -142,7 +142,7 @@ get_offer returns a link with some parameters already determined, while others a
 | gaid | string | Fill if possible for Android | Android device GAID advertising identifier |
 | gaid_sha1 | string | Fill if possible for Android | SHA1 value of Android device GAID |
 | gaid_md5 | string | Fill if possible for Android | MD5 value of Android device GAID |
-| ad_type | string | Required | Ad type |
+| ad_type | string | Fill if possible | Ad type |
 | country | string | Required when country targeting is set | User's country code, such as "US", "CN", etc. Refer to [Country/City Codes](#countrycity-codes) |
 | city | string | Required when city targeting is set | User's city. Refer to [Country/City Codes](#countrycity-codes) |
 | ip | string | Required | User IP address |
