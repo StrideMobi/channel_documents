@@ -184,15 +184,23 @@ https://yourserver.com/postback?offer_id={offer_id}&payout={payout}&source={sour
 ## Postback Parameters
 | Parameter | Description |
 |:---------|:------------|
-| {offer_id} | Offer ID |
-| {payout} | Payout amount |
+| {postback_type} | Value can be install, reject, event |
+| {channel_id} | Unique channel ID |
+| {site_id} | Corresponding value from click reporting |
+| {offer_id} | Corresponding value from click reporting |
+| {click_id} | Click ID, available for channel's own tracking and attribution |
+| {rejected_reason} | Rejection reason, returned only when postback_type is reject |
+| {rejected_sub_reason} | Rejection sub-reason, returned only when postback_type is reject |
+| {event_name} | Event name, returned only when postback_type is event |
+| {event_value} | Event value, returned only when postback_type is event |
+| {payout} | Settlement amount |
+| {passthrough} | Corresponding value from click reporting |
 | {source} | Traffic source identifier |
 | {sub1} | Custom parameter 1 |
 | {sub2} | Custom parameter 2 |
 | {sub3} | Custom parameter 3 |
 | {sub4} | Custom parameter 4 |
 | {sub5} | Custom parameter 5 |
-| {click_id} | Click ID |
 | {country} | Country code |
 | {ip} | User IP address |
 
