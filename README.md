@@ -14,93 +14,111 @@ The complete process for channel partners to integrate with StrideMobi is as fol
 # get_offer
 Channel partners can use this interface to pull available offer lists
 
-## Request URL
+## Request
+Send the following GET request to obtain offer lists
 ```
-https://api.stridemobi.com/api/v1/get_offer
+https://{domain}/{api_version}/channel/get_offers?channel_id=${channel_id}&timestamp=${timestamp}&sign=${sign}
 ```
 
-## Request Method
-GET
+### Parameters Description
+| Parameter | Meaning | Example |
+|:---------|:------|---------|
+| {domain} | StrideMobi API domain, please obtain from your account manager ||
+| {api_version} | API version, current version is V1.0 | V1.0 |
+| {channel_id} | Channel ID obtained during integration | 113 |
+| {timestamp} | Current UTC timestamp | 1760170094 |
+| {sign} | Signature generated using the token obtained during integration <a href="#sign-generation-logic" style="color:blue">View sign generation logic</a> | 6e0fc913cdd5da0913aef0dc9755edbddf7fd9733328322908f9be3bdcc325d6 |
 
-## Request Parameters
-| Parameter | Type | Required | Description |
-|:---------|:------|:---------|:------------|
-| domain | string | Yes | Access domain name (fixed value, please contact the operations manager for the specific value) |
-| api_version | string | Yes | API version, fixed value "v1" |
-| channel_id | int | Yes | Channel unique identifier, can be obtained from the platform |
-| timestamp | int | Yes | Unix timestamp (in seconds) |
-| device_type | int | Yes | Device type, see [Device Type](#device-type-offertarget_device_types) |
-| platform | int | Yes | Device platform, see [Device Platform](#device-platform-offertarget_platform) |
-| country | string | Yes | Country code, uppercase 2 letters (e.g., US, CN), see [Country/City Codes](#country-city-codes) |
-| city | string | No | City code, lowercase, see [Country/City Codes](#country-city-codes) |
-| osv | int | No | Operating system version, see [Operating System Version](#operating-system-version-offerosv) |
-| ip | string | No | User IP address |
-| ua | string | No | User-Agent |
-| limit | int | No | Number of offers to return per page, default 20, maximum 100 |
-| page | int | No | Page number, default 1 |
-| offer_ids | string | No | Comma-separated list of offer IDs to filter |
-| sign | string | Yes | Signature, see [Sign Generation Logic](#sign-generation-logic) for generation method |
-
-## Response Format
+## Response
+After accessing the API, you will get the following result:
 ```json
 {
-    "code": 1,
-    "msg": "success",
-    "data": {
-        "total": 100,
+    "code": 0,
+    "message": "success",
+    "offer_num": {offer_num}, // Number of offers
         "offers": [
             {
-                "offer_id": "123",
-                "offer_name": "Example App Install",
-                "description": "Install and open the app",
-                "preview_link": "https://example.com/app",
-                "tracking_link": "https://tr.stridemobi.com/click?offer_id=123&aff_id=456&source={source}&sub1={sub1}&sub2={sub2}&sub3={sub3}&sub4={sub4}&sub5={sub5}",
-                "payout": 1.5,
-                "currency": "USD",
-                "target": {
-                    "countries": ["US", "CA", "UK"],
-                    "device_types": [1],
-                    "platforms": [1, 2]
-                },
-                "creative": "https://example.com/creative.jpg",
-                "status": 1,
-                "promotion_type": 1,
-                "billing_type": 1,
-                "daily_cap": 1000,
-                "hourly_cap": 100,
-                "remaining_daily_cap": 500,
-                "remaining_hourly_cap": 50
+                // offer basic information
+                "offer_id": {offer_id},
+                "offer_name": "{offer_name}", // Offer name
+                "status": {status}, // Offer status
+                "promotion_type": {promotion_type}, 
+                "app_name": "{app_name}", // App name
+                "package_name": "{package_name}", // App package name
+                "preview_link": "{preview_link}", 
+                "click_url": "{click_url}",
+                "is_support_vta": {is_support_vta}, 
+                "impression_url": "{impression_url}", 
+                "kpi_note":"{kpi_note}", 
+
+                // Creative information
+                "icon_url" : "{icon_url}", 
+                "image_url": "{image_url}",
+                "video_url": "{video_url}", 
+
+                // Targeting information
+                "target_countrys":["{country}", "{country}"],
+                "target_cities":["{city}", "{city}"], 
+                "target_device_types":[{device_type}, {device_type}], 
+                "target_platform": [{target_platform}, {target_platform}], 
+                "min_osv": {min_osv}, 
+                "max_osv": {max_osv}, 
+                "siteid_blacklist": ["{siteid}", "{siteid}"], 
+
+
+                // Billing information
+                "billing_event": "{billing_event}",
+                "billing_type": {billing_type},
+                "billing_price": 100,
+
+                // Budget information
+                "billing_event_cap": {billing_event_cap}, 
+                "impression_cap": {impression_cap},
+                "click_cap": {click_cap}
+            },
+            {
+                // Multiple offers repeat this structure
             }
         ]
-    }
 }
 ```
 
 ## Response Parameters Description
-| Parameter | Type | Description |
-|:---------|:------|:------------|
-| code | int | Status code, 1 for success |
-| msg | string | Status message |
-| data.total | int | Total number of offers |
-| data.offers | array | Offer list |
-| data.offers[].offer_id | string | Offer ID |
-| data.offers[].offer_name | string | Offer name |
-| data.offers[].description | string | Offer description |
-| data.offers[].preview_link | string | Preview link |
-| data.offers[].tracking_link | string | Tracking link, you need to replace the macros with actual values |
-| data.offers[].payout | float | Payout amount |
-| data.offers[].currency | string | Currency code |
-| data.offers[].target.countries | array | Target countries |
-| data.offers[].target.device_types | array | Target device types |
-| data.offers[].target.platforms | array | Target platforms |
-| data.offers[].creative | string | Creative URL |
-| data.offers[].status | int | Offer status |
-| data.offers[].promotion_type | int | Promotion type |
-| data.offers[].billing_type | int | Billing type |
-| data.offers[].daily_cap | int | Daily cap |
-| data.offers[].hourly_cap | int | Hourly cap |
-| data.offers[].remaining_daily_cap | int | Remaining daily cap |
-| data.offers[].remaining_hourly_cap | int | Remaining hourly cap |
+*Some fields have complex meanings and will be explained in detail after the table*
+
+| Parameter | Type | Description | Example |
+|:---------|:------|:------------|------:|
+| code | integer | Response status code, 0 for success | 0 |
+| message | string | Response message description | success |
+| offer_num | integer | Number of offers | 10 |
+| offers | array | Offer list array, number of items matches offer_num |  |
+| offers[].offer_id | integer | Unique offer ID | 28531223 |
+| offers[].offer_name | string | Offer name | shein |
+| offers[].status | integer | Refer to [Offer Status](#offer-status-offerstatus) | 1 |
+| offers[].promotion_type | integer | Refer to [Promotion Type](#promotion-type-offerpromotion_type) | 1 |
+| offers[].app_name | string | App name | shein |
+| offers[].package_name | string | App package name | com.zzkko  |
+| offers[].preview_link | string | App preview link | https://play.google.com/store/apps/details?id=com.zzkko |
+| offers[].click_url | string | Click redirect link | https://t.xxx.com/click?params=${params} |
+| offers[].is_support_vta | boolean | Whether to support VTA tracking | 0/1 |
+| offers[].impression_url | string | Impression tracking link (only available when VTA is supported) | https://t.stridetracking.com/imp?params=${params} |
+| offers[].kpi_note | string | KPI description | "cvr > 0.5%, payment rate > 1%" |
+| offers[].icon_url | array | Icon URL | ["https://cdn.stridemobi.com/${package_name}/icon.png"] |
+| offers[].image_url | array | Image URL | ["https://cdn.stridemobi.com/${package_name}/image.png"] |
+| offers[].video_url | array | Video URL | ["https://cdn.stridemobi.com/${package_name}/video.mp4"] |
+| offers[].target_countrys | array | Target countries list, refer to [Country/City Codes](#countrycity-codes) | ["US","CN"] |
+| offers[].target_cities | array | Target cities list, refer to [Country/City Codes](#countrycity-codes) | ["beijing", "jakarta"] |
+| offers[].target_device_types | array | Refer to [Device Type](#device-type-offertarget_device_types) | [1,2] |
+| offers[].target_platform | array | Refer to [Device Platform](#device-platform-offertarget_platform) | [1,2] |
+| offers[].min_osv | integer | Refer to [Operating System Version](#operating-system-version-offerosv) | 80101 |
+| offers[].max_osv | integer | Refer to [Operating System Version](#operating-system-version-offerosv) | 150101 |
+| offers[].siteid_blacklist | array | Media blacklist | ["siteid1","siteid2"] |
+| offers[].billing_event | string | Settlement event between StrideMobi and channel | install |
+| offers[].billing_type | integer | Billing type corresponding to billing_event, refer to [Billing Type](#billing-type-offerbilling_type) | 1 |
+| offers[].billing_price | number | Billing price | 3.1 |
+| offers[].billing_event_cap | integer | Daily billing event cap | 10000 |
+| offers[].impression_cap | integer | Daily impression cap | 20000000 |
+| offers[].click_cap | integer | Daily click cap | 20000000 |
 
 ## Error Codes
 | Error Code | Description |
@@ -114,7 +132,7 @@ GET
 Channels use this interface to report user ad click or impression events.
 Each offer has a different reporting address, which will be returned by the get_offer interface. Example:
 ```
-http://www.sttt.com/click?ad_type={}&channel_id=3&city={}&click_id={}&country={}&bundle={}&creative_id={}&device_brand={}&device_model={}&device_os_version={}&device_platform={}&device_type={}&lang={}&gaid={}&gaid_md5={}&gaid_sha1={}&ip={}&offer_id=4&site_id={}&user_agent={}&passthrough={}
+http://www.sttt.com/click?adtype={}&channel_id=3&city={}&click_id={}&country={}&bundle={}&creative_id={}&device_brand={}&device_model={}&device_os_version={}&device_platform={}&device_type={}&lang={}&gaid={}&gaid_md5={}&gaid_sha1={}&ip={}&offer_id=4&site_id={}&user_agent={}&passthrough={}
 ```
 Impression and click parameters are the same, only the path is different.
 
@@ -142,7 +160,7 @@ get_offer returns a link with some parameters already determined, while others a
 | gaid | string | Fill if possible for Android | Android device GAID advertising identifier |
 | gaid_sha1 | string | Fill if possible for Android | SHA1 value of Android device GAID |
 | gaid_md5 | string | Fill if possible for Android | MD5 value of Android device GAID |
-| ad_type | string | Fill if possible | Ad type |
+| adtype | string | Fill if possible, refer to [Ad Type](#ad-type-adtype) | Ad type |
 | country | string | Required when country targeting is set | User's country code, such as "US", "CN", etc. Refer to [Country/City Codes](#countrycity-codes) |
 | city | string | Required when city targeting is set | User's city. Refer to [Country/City Codes](#countrycity-codes) |
 | ip | string | Required | User IP address |
@@ -166,20 +184,30 @@ The impression/click interface returns results in JSON format, example as follow
 }
 ```
 
+For code and msg, refer to [impression/click Return Result Description](#impressionclick-return-result-description)
+}
+```
+
 Code and msg reference [impression/click Return Result Description](#impressionclick-return-result-description)
 
 # postback
 
-## Postback Mechanism
-StrideMobi uses postback URLs to track conversions. When a user completes an action (e.g., installs an app), StrideMobi will send a request to your postback URL to notify you of the conversion.
+After StrideMobi detects relevant events, it will send postbacks to the channel. Channels can provide a postback URL during integration, and the relevant macro parameters will be replaced with specific values when the postback is sent.
 
-## Setting Up Postback URL
-You can set up your postback URL in the StrideMobi platform. The postback URL should contain macros that will be replaced with actual values when the postback is sent.
+Example:
+```
+http://www.sttt.com/postback?type={postback_type}&price={payout}
+```
 
-**Example Postback URL:**
-```
-https://yourserver.com/postback?offer_id={offer_id}&payout={payout}&source={source}&sub1={sub1}&sub2={sub2}&sub3={sub3}&sub4={sub4}&sub5={sub5}&click_id={click_id}
-```
+Available postback events:
+- install: Installation event
+- reject: Rejected installation, usually caused by MMP anti-cheating
+- event: Post-install event, such as registration, payment, etc. When this event is returned, it will include the event_name parameter to distinguish different events
+- convertion: Settlement event. The billing event agreed between StrideMobi and the channel, i.e., the billing_event of the offer obtained through get_offer. When this event is returned, it will include the payout parameter to indicate the settlement amount.
+
+**Note:** 
+* convertion is required, and channels can use this postback to calculate transaction amounts with StrideMobi.
+* To reduce the number of interactions, install and event postbacks do not include events covered by convertion. For example, install postback will not be triggered for CPI offers, and event postback for CPE offers will not include events with event_name=billing_event.
 
 ## Postback Parameters
 | Parameter | Description |
@@ -208,54 +236,35 @@ https://yourserver.com/postback?offer_id={offer_id}&payout={payout}&source={sour
 ## sign Generation Logic
 
 ### Sign Generation Logic
-To ensure API security, all requests need to include a sign parameter. The sign is generated using the following steps:
-
-1. Sort all request parameters (excluding sign) in alphabetical order by parameter name
-2. Concatenate the parameter name and value in the format of "name=value"
-3. Concatenate all these strings with "&"
-4. Append your API secret key to the end
-5. Calculate the MD5 hash of the resulting string
+The sign generation logic is as follows:
+1. Concatenate channel_id, timestamp, and token into a string, for example: 1131760170094token
+2. Perform SHA256 encryption on the concatenated string to get the sign
 
 **Example:**
 If the request parameters are:
-- api_key: abc123
-- app_id: app456
-- country: US
-- device_type: 1
-- platform: 1
-
-And the API secret key is: secret789
+- channel_id: 11317
+- timestamp: 60170094
+- token: abc12345
 
 The sign generation process would be:
-1. Sort parameters: api_key, app_id, country, device_type, platform
-2. Concatenate: "api_key=abc123&app_id=app456&country=US&device_type=1&platform=1"
-3. Append secret key: "api_key=abc123&app_id=app456&country=US&device_type=1&platform=1secret789"
-4. Calculate MD5: "e10adc3949ba59abbe56e057f20f883e"
+1. Concatenate: "1131760170094abc12345"
+2. Perform SHA256 encryption: "e10adc3949ba59abbe56e057f20f883e..."
 
 ### Code Example
 **PHP:**
 ```php
-function generate_sign($params, $api_secret) {
-    ksort($params);
-    $str = '';
-    foreach ($params as $key => $value) {
-        if ($key != 'sign') {
-            $str .= $key . '=' . $value . '&';
-        }
-    }
-    $str = rtrim($str, '&') . $api_secret;
-    return md5($str);
+function generate_sign($channel_id, $timestamp, $token) {
+    $str = $channel_id . $timestamp . $token;
+    return hash('sha256', $str);
 }
 ```
 
 **Python:**
 ```python
 import hashlib
-def generate_sign(params, api_secret):
-    sorted_params = sorted(params.items())
-    str_params = '&'.join([f"{k}={v}" for k, v in sorted_params if k != 'sign'])
-    str_to_sign = str_params + api_secret
-    return hashlib.md5(str_to_sign.encode()).hexdigest()
+def generate_sign(channel_id, timestamp, token):
+    str_params = f"{channel_id}{timestamp}{token}"
+    return hashlib.sha256(str_params.encode()).hexdigest()
 ```
 
 **Java:**
@@ -340,10 +349,19 @@ Examples:
 | 1 | CPI |
 | 2 | CPE |
 
+### 5.7 Ad Type (adtype)
+| Value | Meaning |
+|:------|:--------|
+| banner | Banner ad |
+| native | Native ad |
+| interstitial | Interstitial ad |
+| rewarded_video | Rewarded video ad |
+| interstitial_video | Interstitial video ad |
+
 ## impression/click Response Codes
 | code | msg | Meaning |
 |------|-----|---------|
-| 1 | ok | Success |
+| 0 | success | Success |
 | 1001 | param_invalid | Invalid parameters |
 | 1004 | internal_error | StrideMobi internal error |
 | 2006 | offer_not_running | Offer not running |

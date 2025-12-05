@@ -123,7 +123,7 @@ https://{domain}/{api_version}/channel/get_offers?channel_id=${channel_id}&times
 渠道通过该接口上报用户点击或展示广告的事件。
 每个offer上报地址不同, get_offer接口会返回具体地址。例：
 ```
-http://www.sttt.com/click?ad_type={}&channel_id=3&city={}&click_id={}&country={}&bundle={}&creative_id={}&device_brand={}&device_model={}&device_os_version={}&device_platform={}&device_type={}&lang={}&gaid={}&gaid_md5={}&gaid_sha1={}&ip={}&offer_id=4&site_id={}&user_agent={}&passthrough={}
+http://www.sttt.com/click?adtype={}&channel_id=3&city={}&click_id={}&country={}&bundle={}&creative_id={}&device_brand={}&device_model={}&device_os_version={}&device_platform={}&device_type={}&lang={}&gaid={}&gaid_md5={}&gaid_sha1={}&ip={}&offer_id=4&site_id={}&user_agent={}&passthrough={}
 ```
 展示和点击参数一致，只是path不同。
 
@@ -152,7 +152,7 @@ get_offer返回链接部分参数已经确定，部分参数为{}，渠道需要
 | gaid | string | android时尽量填写 | Android设备的GAID广告标识符 |
 | gaid_sha1 | string | android时尽量填写 | Android设备的GAID的SHA1值 |
 | gaid_md5 | string | android时尽量填写 | Android设备的GAID的MD5值 |
-| ad_type | string | 尽量填写 | 广告类型 |
+| adtype | string | 尽量填写, 参考<a href="#广告类型-adtype" style="color:blue">广告类型</a> | 广告类型 |
 | country | string | 有国家定向时必填 | 用户所在国家代码，如"US"、"CN"等, 参考<a href="#国家城市代码" style="color:blue">国家城市代码</a> |
 | city | string | 有城市定向时必填 | 用户所在城市, 如"beijing"、"jakarta"等, 参考<a href="#国家城市代码" style="color:blue">国家城市代码</a> |
 | ip | string | 必填 | 用户IP地址 |
@@ -338,6 +338,15 @@ func main() {
 |:------|:------|
 | 1 | CPI |
 | 2 | CPE |
+
+### 广告类型-adtype
+| 取值 | 含义 |
+|:------|:------|
+| banner | 横幅广告 |
+| native | 原生广告 |
+| interstitial | 插屏广告 |
+| rewarded_video | 奖励视频广告 |
+| interstitial_video | 插屏视频广告 |
 
 ## impression/click返回结果说明
 | code | msg | 含义 |
