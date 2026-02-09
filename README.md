@@ -139,6 +139,7 @@ Impression and click parameters are the same, only the path is different.
 ## Request Parameters Description
 get_offer returns a link with some parameters already determined, while others are {}. Channels need to replace these with specific values when reporting.
 
+
 | Parameter | Type | Filling Instructions | Description |
 |:---------|:------|:------------------|:------------|
 | offer_id | int | Has a determined value, no need for channel to fill | Unique identifier of the ad |
