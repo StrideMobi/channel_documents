@@ -105,6 +105,7 @@ https://{domain}/{api_version}/channel/get_offers?channel_id=${channel_id}&times
 | offer.image_url | 图片URL | array | ["https://cdn.stridemobi.com/${package_name}/image.png"] |
 | offer.video_url | 视频URL | array | ["https://cdn.stridemobi.com/${package_name}/video.mp4"] |
 | offer.target_countrys | 目标国家列表,参考<a href="#国家城市代码" style="color:blue">国家城市代码</a> | array | ["US","CN"] |
+| offer.target_states | 目标国家的州| array["NEW YORK"]|
 | offer.target_cities | 目标城市列表,参考<a href="#国家城市代码" style="color:blue">国家城市代码</a> | array | ["beijing", "jakarta"] |
 | offer.target_device_types | 参考<a href="#设备类型-offertarget_device_types" style="color:blue">设备类型</a> | array | [1,2] |
 | offer.target_platform | 参考<a href="#设备平台-offertarget_platform" style="color:blue">设备平台</a> | array | [1,2] |
@@ -154,6 +155,7 @@ get_offer返回链接部分参数已经确定，部分参数为{}，渠道需要
 | gaid_md5 | string | android时尽量填写 | Android设备的GAID的MD5值 |
 | adtype | string | 尽量填写, 参考<a href="#广告类型-adtype" style="color:blue">广告类型</a> | 广告类型 |
 | country | string | 有国家定向时必填 | 用户所在国家代码，如"US"、"CN"等, 参考<a href="#国家城市代码" style="color:blue">国家城市代码</a> |
+| state | string | 有州定向时必填| 用户所在州|
 | city | string | 有城市定向时必填 | 用户所在城市, 如"beijing"、"jakarta"等, 参考<a href="#国家城市代码" style="color:blue">国家城市代码</a> |
 | ip | string | 必填 | 用户IP地址 |
 | user_agent | string | 必填 | 用户浏览器的User-Agent信息 |
