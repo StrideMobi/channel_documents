@@ -138,7 +138,7 @@ get_offer返回链接部分参数已经确定，部分参数为{}，渠道需要
 | channel_id | int | 会有确定值, 无需渠道填写 | 渠道的唯一ID |
 | click_id | string | 自选 | 点击id,可供渠道自己进行追踪和归因 |
 | site_id | string | 自选 | 媒体站点ID，渠道内部区分不同的媒体来源 |
-| device_platform | int | 必填 | 参考<a href="#设备平台-offertarget_platform" style="color:blue">设备平台</a> |
+| device_platform | int | 会有确定值,无需渠道填写 | 参考<a href="#设备平台-offertarget_platform" style="color:blue">设备平台</a> |
 | device_type | int | 必填 | 参考<a href="#设备类型-offertarget_device_types" style="color:blue">设备类型</a> |
 | device_os_version | string | 必填 | 可传原始字符串如16.3.1，也可转换为<a href="#操作系统版本-offerosv" style="color:blue">操作系统版本</a>格式 |
 | device_brand | string | 尽量填写 | 设备品牌 |
